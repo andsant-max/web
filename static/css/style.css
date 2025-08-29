@@ -1,0 +1,184 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #01152e;
+}
+
+.wrapper {
+    width: 65vmin;
+    height: 70vmin;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    border-radius: 5px;
+    background: #652d05;
+}
+ 
+.game-details{
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 20px 27px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.play-board{
+    width: 100%;
+    height: 100%;
+    background: #9ccc65;
+    display: grid;
+    grid-template: repeat(30, 1fr) / repeat(30, 1fr);
+    position: relative;
+}
+/* Estilo para el taco */
+.play-board .food{
+    background: linear-gradient(135deg, #f4d03f, #f7dc6f);
+    border-radius: 45% 45% 55% 55%;
+    position: relative;
+    transform: scale(0.9) rotate(45deg);
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2);
+    border: 1px solid #d68910;
+}
+
+/* Relleno del taco (carne) */
+.play-board .food::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    width: 70%;
+    height: 40%;
+    background: linear-gradient(45deg, #a0522d, #8b4513);
+    border-radius: 20%;
+    transform: rotate(-10deg);
+}
+
+/* Lechuga del taco */
+.play-board .food::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    width: 25%;
+    height: 25%;
+    background: #27ae60;
+    border-radius: 50% 20% 50% 20%;
+    box-shadow: 15px 5px 0 -2px #27ae60, 8px -3px 0 -1px #2ecc71;
+}
+
+/* Cabeza de la serpiente */
+.play-board .head {
+    background: linear-gradient(135deg, #60cbff, #4dabf7);
+    border-radius: 40%;
+    position: relative;
+    transform: scale(0.95);
+    box-shadow: inset -1px -1px 2px rgba(0,0,0,0.2);
+}
+
+/* Cuerpo de la serpiente */
+.play-board .body {
+    background: linear-gradient(135deg, #45b7d1, #96ceb4);
+    border-radius: 50%;
+    position: relative;
+    transform: scale(0.85);
+    box-shadow: inset -1px -1px 3px rgba(0,0,0,0.15), 0 1px 2px rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Patrón en el cuerpo de la serpiente */
+.play-board .body::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* Escamas decorativas */
+.play-board .body::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 30%, transparent 50%);
+    border-radius: 50%;
+}
+
+/* Ojos de la serpiente (solo en la cabeza) */
+.play-board .head::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 20%;
+    width: 3px;
+    height: 3px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    box-shadow: 8px 0 0 #1a1a1a;
+}
+
+/* Efecto de brillo en la serpiente */
+.play-board .head::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    width: 4px;
+    height: 2px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+}
+
+/* Crear el patrón de cuadrícula alternada */
+.play-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(45deg, #8bc34a 25%, transparent 25%),
+        linear-gradient(-45deg, #8bc34a 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #8bc34a 75%),
+        linear-gradient(-45deg, transparent 75%, #8bc34a 75%);
+    background-size: calc(100% / 15) calc(100% / 15);
+    background-position: 
+        0 0,
+        0 calc(100% / 30),
+        calc(100% / 30) calc(-100% / 30),
+        calc(-100% / 30) 0;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.play-board .food{
+    /* ... estilos existentes ... */
+    z-index: 10;  /* NUEVO */
+}
+
+.play-board .head {
+    /* ... estilos existentes ... */
+    z-index: 10;  /* NUEVO */
+}
+
+.play-board .body {
+    /* ... estilos existentes ... */
+    z-index: 10;  /* NUEVO */
+}

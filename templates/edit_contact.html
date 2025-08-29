@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<br>
+<br>
+<div class="col-md-4 offset-md-4">
+    <div class="card card-body bg-dark border-bottom border-body" data-bs-theme="dark" >
+        <form action="/update/{{contact.0}}" method="POST">
+            <div class="form-group">
+                <input type="text" name="telefono" placeholder="telefono" class="form-control" value="{{ contact.2 }}">
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="text" name="nombre" placeholder="nombre" class="form-control" value="{{ contact.3 }}">
+            </div>
+            <br>
+            <div class="form-group">
+            <input type="text" name="apellido" placeholder="apellido" class="form-control" value="{{ contact.4 }}">
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="text" name="correo" placeholder="correo" class="form-control" value="{{ contact.5 }}">
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="text" name="contraseña" placeholder="contraseña" class="form-control" value="{{ contact.6 }}">
+            </div>
+            <br>
+            <div class="form-group">
+                <select type="text" name="tipo_documento" placeholder="" class="form-control" value="{{ contact.7 }}">
+                <option value="0" selected>--Tipo de Documento--</option>
+                <option value="T.I" >T.I</option>
+                <option value="C.C" >C.C</option>
+                <option value="C.E" >C.E</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="text" name="numero_documento" placeholder="numero de documento" class="form-control" value="{{ contact.8 }}">
+            </div>
+            <br>
+            <div class="form-group d-grid gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Save
+                </button>
+            </div>
+        
+        </form>
+    </div>
+</div>
+<br>
+<br>
+{% endblock %}

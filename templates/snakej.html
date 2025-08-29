@@ -1,0 +1,287 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+ 
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #01152e;
+        }
+ 
+        .wrapper {
+            width: 65vmin;
+            height: 70vmin;
+            display: flex;
+            overflow: hidden;
+            flex-direction: column;
+            border-radius: 5px;
+            background: #5d3172;
+        }
+        .game-details{
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 20px 27px;
+            display: flex;
+            justify-content: space-between;
+        }
+ 
+        .play-board{
+            width: 100%;
+            height: 100%;
+            background: #9ccc65;
+            display: grid;
+            grid-template: repeat(30, 1fr) / repeat(30, 1fr);
+            position: relative;
+        }
+        /* Estilo para el taco */
+        .play-board .food{
+            background: linear-gradient(135deg, #f4d03f, #f7dc6f);
+            border-radius: 45% 45% 55% 55%;
+            position: relative;
+            transform: scale(0.9) rotate(45deg);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2);
+            border: 1px solid #d68910;
+            z-index: 10;
+        }
+ 
+        /* Relleno del taco (carne) */
+        .play-board .food::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 15%;
+            width: 70%;
+            height: 40%;
+            background: linear-gradient(45deg, #a0522d, #8b4513);
+            border-radius: 20%;
+            transform: rotate(-10deg);
+        }
+ 
+        /* Lechuga del taco */
+        .play-board .food::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 25%;
+            height: 25%;
+            background: #27ae60;
+            border-radius: 50% 20% 50% 20%;
+            box-shadow: 15px 5px 0 -2px #27ae60, 8px -3px 0 -1px #2ecc71;
+        }
+ 
+        /* Cabeza de la serpiente */
+        .play-board .head {
+            background: linear-gradient(135deg, #ffffff, #868686);
+            border-radius: 40%;
+            position: relative;
+            transform: scale(0.95);
+            box-shadow: inset -1px -1px 2px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+ 
+        /* Cuerpo de la serpiente */
+        .play-board .body {
+            background: linear-gradient(135deg, #cbdee2, #aaadac);
+            border-radius: 50%;
+            position: relative;
+            transform: scale(0.85);
+            box-shadow: inset -1px -1px 3px rgba(0,0,0,0.15), 0 1px 2px rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 10;
+        }
+ 
+        /* Patrón en el cuerpo de la serpiente */
+        .play-board .body::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            width: 70%;
+            height: 70%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            border-radius: 50%;
+        }
+ 
+        /* Escamas decorativas */
+        .play-board .body::after {
+            content: '';
+            position: absolute;
+            top: 30%;
+            left: 30%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 30%, transparent 50%);
+            border-radius: 50%;
+        }
+ 
+        /* Ojos de la serpiente (solo en la cabeza) */
+        .play-board .head::before {
+            content: '';
+            position: absolute;
+            top: 25%;
+            left: 20%;
+            width: 3px;
+            height: 3px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            box-shadow: 8px 0 0 #1a1a1a;
+        }
+ 
+        /* Efecto de brillo en la serpiente */
+        .play-board .head::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 30%;
+            width: 4px;
+            height: 2px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+        }
+ 
+        /* Crear el patrón de cuadrícula alternada */
+        .play-board::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, #8bc34a 25%, transparent 25%),
+                linear-gradient(-45deg, #8bc34a 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #8bc34a 75%),
+                linear-gradient(-45deg, transparent 75%, #8bc34a 75%);
+            background-size: calc(100% / 15) calc(100% / 15);
+            background-position: 
+                0 0,
+                0 calc(100% / 30),
+                calc(100% / 30) calc(-100% / 30),
+                calc(-100% / 30) 0;
+            opacity: 1;
+            pointer-events: none;
+            z-index: 1;
+        }
+</style>
+</head>
+<body>
+ 
+    <div class="wrapper">
+<div class="game-details">
+<div class="score">score: 0</div>
+<div class="high-score">high score: 0</div>
+</div>
+<div class="play-board"></div>
+</div>
+ 
+    <script>
+        const playBoard = document.querySelector(".play-board");
+        const scoreElement = document.querySelector(".score");
+        const highScoreElement = document.querySelector(".high-score");
+ 
+        let gameOver = false
+        let foodX, foodY;
+        let snakeX = 5, snakeY = 10;
+        let snakeBody = []; //partes del cuerpo de la serpiente
+        let velocityX = 0, velocityY = 0;
+        let setIntervalId;
+        let score = 0;
+ 
+        // Usando variable en memoria en lugar de localStorage
+        let highScore = 0;
+        try {
+            highScore = localStorage.getItem("high-score") || 0;
+        } catch (e) {
+            highScore = 0;
+        }
+        highScoreElement.innerHTML = `High Score: ${highScore}`;
+ 
+        // posicion aleatoria de manzanas
+        const changeFoodPosition = () => {
+            foodX = Math.floor(Math.random() * 30) + 1;
+            foodY = Math.floor(Math.random() * 30) + 1;
+        }
+ 
+        const handleGameOver = () => {
+            clearInterval(setIntervalId);
+            alert("Game Over");
+            location.reload();
+        }
+ 
+        // controles
+        const changeDirection = (e)=> {
+            if(e.key === "ArrowUp" && velocityY != 1) {
+                velocityX = 0;
+                velocityY = -1;
+            } else if(e.key === "ArrowDown" && velocityY != -1) {
+                velocityX = 0;
+                velocityY = 1;
+            } else if(e.key === "ArrowLeft" && velocityX != 1) {
+                velocityX = -1;
+                velocityY = 0;
+            } else if(e.key === "ArrowRight" && velocityX != -1) {
+                velocityX = 1;
+                velocityY = 0;
+            } 
+        }
+ 
+        const initGame = () => {
+            if(gameOver) return handleGameOver();
+            let htmlMarkup = `<div class="food" style="grid-area: ${foodY} / ${foodX}"></div>`;
+            if(snakeX === foodX && snakeY === foodY) {
+                changeFoodPosition();
+                snakeBody.push([foodX, foodY]);
+                score++;
+ 
+                highScore = score >= highScore ? score : highScore; //almacenamiento de puntaje maximo
+                try {
+                    localStorage.setItem("high-score", highScore);
+                } catch (e) {
+                    // En caso de que localStorage no esté disponible
+                }
+                scoreElement.innerHTML = `Score: ${score}`;
+                highScoreElement.innerHTML = `high Score: ${highScore}`;
+            }
+            for(let i = snakeBody.length -1; i > 0; i--) {
+                snakeBody[i] = snakeBody[i - 1];
+            }
+ 
+            snakeBody[0] = [snakeX, snakeY];
+ 
+            snakeX += velocityX;
+            snakeY += velocityY;
+ 
+            if(snakeX <= 0 || snakeX > 30 || snakeY <= 0 || snakeY > 30) {
+                gameOver = true;
+            }
+ 
+            for(let i = 0 ; i < snakeBody.length; i++){
+                // La cabeza (primer elemento) tiene clase "head", el resto "body"
+                const segmentClass = i === 0 ? "head" : "body";
+                htmlMarkup += `<div class="${segmentClass}" style="grid-area: ${snakeBody[i][1]} / ${snakeBody[i][0]}"></div>`;
+                //muerte consigo mismo
+                if(i !== 0 && snakeBody[0][1] === snakeBody[i][1] && snakeBody[0][0] === snakeBody[i][0]) {
+                    gameOver = true;
+                }
+            }
+            playBoard.innerHTML = htmlMarkup;
+        }
+ 
+        changeFoodPosition();
+        setIntervalId = setInterval(initGame, 125);
+        document.addEventListener("keydown", changeDirection);
+</script>
+
+{% endblock %}

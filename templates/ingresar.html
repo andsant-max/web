@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="login" id="ing">
+    <img src="{{ url_for('static', filename='img/sing up bg.jpeg') }}" class="login__img">
+
+    <br>
+         <center>
+         <div class="border border-black" style="width: 50%;"> <div class=" p-3" style="width: 100%;" > 
+         <form action="/ingresar" method="POST" class="container">
+         <form id="" >
+       <div class="mb-3">
+         <label for="exampleInputEmail1" class="form-label" id="bla"> Correo </label>
+         <input type="text" placeholder="" class="form-control" id="correo" >
+       </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label" id="bla"> Contraseña </label>
+          <input type="password" placeholder="" class="form-control" id="clave">
+        </div>
+        <button type="submit" class="btn btn-outline-dark" id="bla"> Iniciar <i class="fa-solid fa-person-circle-check"></i></button>
+         </form>
+      </form> </div> </div> </center>
+      <br>
+
+{% endblock %}

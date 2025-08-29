@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<br>
+
+<div class="">
+   <div style="background-image: url(https://i.pinimg.com/736x/da/d3/6e/dad36ecc73f914e54494800780ccee3f.jpg) ;">
+      <br><br><br><br>
+         <center>
+         <div class="border border-black" style="width: 50%;"> <div class=" p-3" style="width: 100%;" > 
+         <form action="/registrarse" method="POST" class="container">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label" id="bla"> Telefono </label>
+          <input type="text" name="telefono" placeholder="" class="form-control" >
+        </div>
+        <div class="mb-3">
+         <label for="exampleInputEmail1" class="form-label" id="bla"> Nombre </label>
+         <input type="text" name="nombre" placeholder="" class="form-control" >
+       </div>
+       <div class="mb-3">
+         <label for="exampleInputEmail1" class="form-label" id="bla"> Apellido </label>
+         <input type="text" name="apellido" placeholder="" class="form-control" >
+       </div>
+       <div class="mb-3">
+         <label for="exampleInputEmail1" class="form-label" id="bla"> Correo </label>
+         <input type="text" name="correo" placeholder="" class="form-control" >
+       </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label" id="bla"> Contraseña </label>
+          <input type="password" name="contraseña" placeholder="" class="form-control">
+        </div>
+        <div class="mb-3">
+         <label for="exampleInputEmail1" class="form-label" id="bla"> Tipo de Documento </label>
+         <select type="text" name="tipo_documento" placeholder="" class="form-control" >
+            <option value="0" selected>--seleccione--</option>
+            <option value="T.I" >T.I</option>
+            <option value="C.C" >C.C</option>
+            <option value="C.E" >C.E</option>
+         </select>
+       </div>
+       <div class="mb-3">
+         <label for="exampleInputEmail1" class="form-label" id="bla"> Numero de Documento </label>
+         <input type="text" name="numero_documento" placeholder="" class="form-control" >
+       </div>
+        <button type="submit" class="btn btn-outline-dark" id="bla"> Resgistrase <i class="fa-solid fa-person-circle-check"></i></button>
+      </form> </div> </div> </center>
+      <br><br><br><br>
+      </div>
+</div>
+
+<br>
+
+{% endblock %}
